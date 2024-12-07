@@ -175,11 +175,14 @@ class Slime(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('graphics/slime_jump.png').convert_alpha()
+        # 슬라임의 크기를 키우기
+        self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2, self.image.get_height() * 2))  # 크기 2배
+
         self.rect = self.image.get_rect(midbottom=(randint(900, 1100), 300))
-        self.jump_speed = -15  # 슬라임 점프 초기 속도
+        self.jump_speed = -20  # 슬라임 점프 초기 속도
         self.gravity = 1  # 중력 효과
         self.vertical_speed = self.jump_speed  # Y축 속도
-        self.max_jump_height = 200  # 최대 점프 높이
+        self.max_jump_height = 300  # 최대 점프 높이
         
     def apply_gravity(self):
         self.vertical_speed += self.gravity
