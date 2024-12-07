@@ -52,20 +52,26 @@ class Player(pygame.sprite.Sprite):
 
     def player_input(self):
         keys = pygame.key.get_pressed()
+        #점프
         if keys[pygame.K_SPACE] and self.rect.bottom >= 300 and not self.sliding:
             self.gravity = -20
             self.jump_sound.play()
 
+        # 좌우 이동
         if keys[pygame.K_LEFT] and not self.sliding:
             self.rect.x -= self.speed
             if self.rect.left < 0:
                 self.rect.left = 0
-
-        if keys[pygame.K_RIGHT] and not self.sliding:
+            self.walking = True  # 좌로 이동시 걷기 애니메이션 작동
+        elif keys[pygame.K_RIGHT] and not self.sliding:
             self.rect.x += self.speed
             if self.rect.right > 800:
                 self.rect.right = 800
+            self.walking = True  # 우로 이동시 걷기 애니메이션 작동
+        else:
+            self.walking = False  # 이동하지 않으면 걷기 애니메이션 정지
 
+        #걷기
         if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
             self.sliding = True
         else:
@@ -84,13 +90,18 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom=previous_midbottom)
         elif self.rect.bottom < 300:
             self.image = self.player_jump
-        else:
+        elif self.walking:
+            #걷는 애니메이션
             self.player_index += 0.1
             if self.player_index >= len(self.player_walk):
                 self.player_index = 0
             previous_midbottom = self.rect.midbottom
             self.image = self.player_walk[int(self.player_index)]
             self.rect = self.image.get_rect(midbottom=previous_midbottom)
+        else:
+            # 걷지 않으면 정지 상태로 설정
+            self.image = self.player_walk[0]
+            
 
     def update(self):
         self.player_input()
