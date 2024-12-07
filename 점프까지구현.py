@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
 		self.jump_sound.set_volume(0.5)
   
         # 추가: 이동 속도
-		self.speed = 5
+		self.speed = 6
 
 	def player_input(self):
 		keys = pygame.key.get_pressed()
