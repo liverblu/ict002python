@@ -151,11 +151,17 @@ class Obstacle(pygame.sprite.Sprite):
             self.kill()
 
 def display_score(start_time):
+    #current_time = int(pygame.time.get_ticks() / 1000) - start_time
+    #score_surf = test_font.render(f'Score: {current_time}', False, (64, 64, 64))
+    
     current_time = int(pygame.time.get_ticks() / 1000) - start_time
-    score_surf = test_font.render(f'Score: {current_time}', False, (64, 64, 64))
+    total_score = current_time + global_score  # 총 점수 계산
+    score_surf = test_font.render(f'Score: {total_score}', False, (64, 64, 64))
+    
     score_rect = score_surf.get_rect(center=(400, 50))
     screen.blit(score_surf, score_rect)
-    return current_time
+    #return current_time
+    return total_score
 
 def collision_sprite(player, obstacle_group):
     if pygame.sprite.spritecollide(player.sprite, obstacle_group, False):
@@ -203,6 +209,7 @@ character_selected = False
 character_choice = "character1"
 start_time = 0
 score = 0
+global_score = 0
 
 # Background Music
 bg_music = pygame.mixer.Sound('audio/music.wav')
@@ -298,9 +305,9 @@ while True:
 
         # 플레이어와 코인 충돌 확인
         for coin in coin_group:
-            if coin.collision(player.sprite):
-                score += 1  # 점수 추가
-
+            if pygame.sprite.collide_rect(coin, player.sprite):  # Rect 충돌 확인
+                coin.kill()  # 코인을 제거
+                global_score += 1  # 점수 추가
 
         game_active = collision_sprite(player, obstacle_group)
 
