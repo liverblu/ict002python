@@ -170,6 +170,34 @@ class Obstacle(pygame.sprite.Sprite):
         elif self.type != 'hailstone' and self.rect.x <= -100:  # fly, snail은 화면 왼쪽으로 벗어나면 삭제
             self.kill()
 
+class Slime(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load('graphics/slime_jump.png').convert_alpha()
+        self.rect = self.image.get_rect(midbottom=(randint(900, 1100), 300))
+        self.jump_speed = -15  # 슬라임 점프 초기 속도
+        self.gravity = 1  # 중력 효과
+        self.vertical_speed = self.jump_speed  # Y축 속도
+        self.max_jump_height = 200  # 최대 점프 높이
+        
+    def apply_gravity(self):
+        self.vertical_speed += self.gravity
+        self.rect.y += self.vertical_speed
+
+        # 땅에 착지했을 경우
+        if self.rect.bottom >= 300:
+            self.rect.bottom = 300
+            self.vertical_speed = self.jump_speed  # 다시 점프
+
+    def update(self):
+        self.rect.x -= 5  # 슬라임의 X축 이동 속도
+        self.apply_gravity()
+        self.destroy()
+
+    def destroy(self):
+        if self.rect.x <= -100:
+            self.kill()
+
 def display_score(start_time):
     #current_time = int(pygame.time.get_ticks() / 1000) - start_time
     #score_surf = test_font.render(f'Score: {current_time}', False, (64, 64, 64))
@@ -266,6 +294,9 @@ pygame.time.set_timer(speed_increase_timer, 10000)  # 장애물 속도 10초마�
 coin_timer = pygame.USEREVENT + 3  # 코인 생성 타이머
 pygame.time.set_timer(coin_timer, 1000)  # 1초마다 코인 생성
 
+slime_timer = pygame.USEREVENT + 4  # 슬라임 생성 타이머
+pygame.time.set_timer(slime_timer, 3000)  # 3초마다 슬라임 생성
+
 obstacle_speed = 6  # 초기 장애물 속도
 
 # Main Game Loop
@@ -303,6 +334,9 @@ while True:
                         # fly와 snail 생성 확률을 50%로 설정
                         obstacle_type = 'fly' if random() < 0.5 else 'snail'
                         obstacle_group.add(Obstacle(obstacle_type, obstacle_speed))
+                        
+            if event.type == slime_timer:
+                obstacle_group.add(Slime())
             
             if event.type == speed_increase_timer:
                 obstacle_speed += 1
@@ -329,6 +363,8 @@ while True:
         
         coin_group.draw(screen)
         coin_group.update()
+        
+
 
         # 플레이어와 코인 충돌 확인
         for coin in coin_group:
