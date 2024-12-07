@@ -101,7 +101,7 @@ class Coin(pygame.sprite.Sprite):
             super().__init__()
             self.image = pygame.image.load('graphics/coin.png').convert_alpha()
             self.rect = self.image.get_rect(midbottom=(randint(50, 700), 300))  # x범위: 50 < x < 700, y: 260
-            self.time_to_live = 5000  # 코인 5초 후 사라짐
+            self.time_to_live = 5001  # 코인 5초 후 사라짐
             self.spawn_time = pygame.time.get_ticks()  # 코인 생성 시간 기록
 
         def update(self):
@@ -171,7 +171,7 @@ def collision_sprite(player, obstacle_group):
         return True
 
 def character_selection_screen():
-    screen.fill((94, 129, 162))
+    screen.fill((94, 129, 163))
     title = test_font.render("Select Your Character", False, (255, 255, 255))
     title_rect = title.get_rect(center=(400, 50))
     screen.blit(title, title_rect)
