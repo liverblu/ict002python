@@ -96,7 +96,26 @@ class Player(pygame.sprite.Sprite):
         self.apply_gravity()
         self.animation_state()
 
+class Coin(pygame.sprite.Sprite):
+        def __init__(self):
+            super().__init__()
+            self.image = pygame.image.load('graphics/coin.png').convert_alpha()
+            self.rect = self.image.get_rect(midbottom=(randint(50, 700), 300))  # x범위: 50 < x < 700, y: 260
+            self.time_to_live = 5000  # 코인 5초 후 사라짐
+            self.spawn_time = pygame.time.get_ticks()  # 코인 생성 시간 기록
+
+        def update(self):
+            if pygame.time.get_ticks() - self.spawn_time > self.time_to_live:
+                self.kill()  # 시간이 지나면 코인 삭제
+
+        def collision(self, player):
+            if pygame.sprite.collide_rect(self, player):
+                self.kill()
+                return True
+            return False
+
 class Obstacle(pygame.sprite.Sprite):
+    
     def __init__(self, type, speed):
         super().__init__()
 
@@ -132,11 +151,17 @@ class Obstacle(pygame.sprite.Sprite):
             self.kill()
 
 def display_score(start_time):
+    #current_time = int(pygame.time.get_ticks() / 1000) - start_time
+    #score_surf = test_font.render(f'Score: {current_time}', False, (64, 64, 64))
+    
     current_time = int(pygame.time.get_ticks() / 1000) - start_time
-    score_surf = test_font.render(f'Score: {current_time}', False, (64, 64, 64))
+    total_score = current_time + global_score  # 총 점수 계산
+    score_surf = test_font.render(f'Score: {total_score}', False, (64, 64, 64))
+    
     score_rect = score_surf.get_rect(center=(400, 50))
     screen.blit(score_surf, score_rect)
-    return current_time
+    #return current_time
+    return total_score
 
 def collision_sprite(player, obstacle_group):
     if pygame.sprite.spritecollide(player.sprite, obstacle_group, False):
@@ -184,6 +209,7 @@ character_selected = False
 character_choice = "character1"
 start_time = 0
 score = 0
+global_score = 0
 
 # Background Music
 bg_music = pygame.mixer.Sound('audio/music.wav')
@@ -193,6 +219,7 @@ bg_music.set_volume(0.3)
 # Groups
 player = pygame.sprite.GroupSingle()
 obstacle_group = pygame.sprite.Group()
+coin_group = pygame.sprite.Group()
 
 # Graphics
 sky_surface = pygame.image.load('graphics/Sky.png').convert()
@@ -215,6 +242,9 @@ pygame.time.set_timer(obstacle_timer, 1500)
 
 speed_increase_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(speed_increase_timer, 10000)  # 장애물 속도 10초마다 증가
+
+coin_timer = pygame.USEREVENT + 3  # 코인 생성 타이머
+pygame.time.set_timer(coin_timer, 1000)  # 1초마다 코인 생성
 
 obstacle_speed = 6  # 초기 장애물 속도
 
@@ -249,6 +279,10 @@ while True:
             
             if event.type == speed_increase_timer:
                 obstacle_speed += 1
+                
+            # 코인 생성
+            if event.type == coin_timer:
+                coin_group.add(Coin())
 
     if not character_selected:
         # Show character selection screen
@@ -265,6 +299,15 @@ while True:
 
         obstacle_group.draw(screen)
         obstacle_group.update()
+        
+        coin_group.draw(screen)
+        coin_group.update()
+
+        # 플레이어와 코인 충돌 확인
+        for coin in coin_group:
+            if pygame.sprite.collide_rect(coin, player.sprite):  # Rect 충돌 확인
+                coin.kill()  # 코인을 제거
+                global_score += 1  # 점수 추가
 
         game_active = collision_sprite(player, obstacle_group)
 
