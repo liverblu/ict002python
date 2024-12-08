@@ -312,7 +312,7 @@ def character_selection_screen():
     screen.blit(char2, char2_rect)
     screen.blit(char3, char3_rect)
 
-    select_message = test_font.render("Press 1, 2, or 3 to Choose", False, (255, 255, 255))
+    select_message = test_font.render("Press   1   or   2   or   3   to Choose", False, (255, 255, 255))
     select_message_rect = select_message.get_rect(center=(400, 350))
     screen.blit(select_message, select_message_rect)
 
