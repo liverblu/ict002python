@@ -348,7 +348,7 @@ game_message_rect = game_message.get_rect(center=(400, 330))
 
 # Timers
 obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer, 152200)
+pygame.time.set_timer(obstacle_timer, 1500)
 
 speed_increase_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(speed_increase_timer, 10000)  # 장애물 속도 10초마다 증가
@@ -357,7 +357,7 @@ coin_timer = pygame.USEREVENT + 3  # 코인 생성 타이머
 pygame.time.set_timer(coin_timer, 1000)  # 1초마다 코인 생성
 
 slime_timer = pygame.USEREVENT + 4  # 슬라임 생성 타이머
-pygame.time.set_timer(slime_timer, 302200)  # 3초마다 슬라임 생성
+pygame.time.set_timer(slime_timer, 3000)  # 3초마다 슬라임 생성
 
 obstacle_speed = 6  # 초기 장애물 속도
 
