@@ -15,6 +15,12 @@ This is a 2D side-scrolling game developed as part of a university project, buil
     * Developed collision detection logic between the player and various obstacles.
     * Managed game states, including a scoring system and player health.
 
+## Controls
+
+* `←` / `→` **Arrow Keys**: Move Character
+* `Spacebar`: Jump
+* `Shift Key`: Duck
+
 ## How to Run
 
 1.  Make sure you have **Python** and **Pygame** installed on your system.
