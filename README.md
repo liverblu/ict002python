@@ -8,7 +8,7 @@ This is a 2D side-scrolling game developed as part of a university project, buil
 
 * **Character Selection:** Players can choose their character at the start of the game.
 * **Obstacles:** Dodge two types of obstacles:
-    * Ground-based obstacles that require the player to **jump**.
+    * Ground-based obstacles that require the player to **jump or duck**.
     * Falling obstacles from the sky that require the player to **avoid**.
 * **Core Game Mechanics:**
     * Implemented player controls for jumping and ducking using keyboard inputs.
