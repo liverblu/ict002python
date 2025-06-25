@@ -2,7 +2,7 @@
 
 # 2D Obstacle-Dodging Game with Pygame
 
-This is a 2D side-scrolling game developed as part of a university project, built using Python and the Pygame library. The player chooses a character and survive by dodging obstacles that approach from the ground and fall from the sky.
+This is a 2D side-scrolling game developed as part of a university project, built using Python and the Pygame library. The player chooses a character and survives by dodging obstacles that approach from the ground and fall from the sky.
 
 ## Gameplay & Features
 
