@@ -36,7 +36,7 @@ This is a 2D side-scrolling game developed as part of a university project, buil
     ```bash
     python main.py  
     ```
-    *(Note: Based on your file list, the main file might be named differently, e.g., `pygame_character_choice 해결.py`. Please update the filename accordingly.)*
+   
 
 ## Project Purpose
 
